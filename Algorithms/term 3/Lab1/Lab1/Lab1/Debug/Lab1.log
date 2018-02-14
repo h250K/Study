@@ -1,0 +1,4 @@
+﻿  Lab1.cpp
+d:\кну\now\алгоритми та складність\лабораторні\1\lab1\lab1\lab1.cpp(41): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  Lab1.vcxproj -> D:\КНУ\Now\Алгоритми та складність\Лабораторні\1\Lab1\Debug\Lab1.exe
+  Lab1.vcxproj -> D:\КНУ\Now\Алгоритми та складність\Лабораторні\1\Lab1\Debug\Lab1.pdb (Partial PDB)
