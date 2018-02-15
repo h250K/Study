@@ -1,5 +1,5 @@
-//Алгоритми та складність
-//Завдання №1
+//Alhorithms and complexity
+//task №1
 //Edition 10.02.2018 01:22
 //Edition 14.02.2018 19:28 final
 
@@ -10,17 +10,17 @@
 
 using namespace std;
 
-int intmax = 0;	//максимальна кількіть стовпців
+int intmax = 0;	//max number of colums
 
-struct templevel //тимчасові ключі
+struct templevel //struct of temp keys
 {
 	int count = 0;
-	int *data = 0; //масив даних
+	int *data = 0; //array
 };
 
-struct secondlevel	//вторична хеш-таблиця
+struct secondlevel	//secondary hash table
 {
-	int *data = 0; //масив даних
+	int *data = 0; //array
 	int a = 0;
 	int b = 0;
 	int m = 1;
@@ -39,7 +39,7 @@ int collisions(secondlevel *now, int nmax);
 int main()
 {
 	srand(time(NULL));
-	//стандартні змінні для функції хешування
+	//standart variables of hashing
 	int mn_a = newint("a", 1, 999,'s');
 	int mn_b = newint("b", 1, 999,'s');
 	int mn_m = newint("m", 1, 999,'s');
@@ -49,20 +49,20 @@ int main()
 	else
 		mn_p = newint("p", 101, 99999, 'p');
 	// 
-	int mn_n = newint("N", 1, 100,'s'); //кількість ключів
-	int *key = InitKeys(mn_n); //ключі створюються рандомно і не повторюються
+	int mn_n = newint("N", 1, 100,'s'); //count of keys
+	int *key = InitKeys(mn_n); //random keys do not repeat
 	PrintKeys(key, mn_n);	//...
-	//для кожного значення хеша з першого рівня створюється масив ключів, які будуть поміщені у таблицю 2 рівня.
-	//Дозволяє спростити функцію GetSecond() та спрощує відловлювання колізій.
+	//for everyone hash from first was create new arrays
+	//for function GetSecond()
 	templevel *tempkeys = SortKeys(key, mn_n, mn_a, mn_b, mn_p, mn_m);
-	//сворення та заповнення таблиць другого рівня, використовується функція хешування, див. далі
+	//create and fill in the second level tables, using hash function
 	secondlevel *firstlevel = GetSecond(tempkeys,mn_m,mn_p);
 	printhashtable(firstlevel, mn_m);	//...
-	//перевірка на відсутність колізій
+	//collision test
 	int coll = collisions(firstlevel, mn_m);
 	cout << endl <<"Collisions: " << mn_n -  coll  << endl << coll << " / " << mn_n << endl;
 	
-	//очищення памяті
+	//clearing the memory
 	free(key);
 	free(tempkeys);
 	free(firstlevel);
@@ -71,14 +71,14 @@ int main()
 	return 0;
 }
 
-//функція створення масиву ключів
+//creating new keys
 int *InitKeys(int nmax)
 {
 	int *res = new int[nmax];
 	for (int i = 0; i < nmax; i++)
 	{
 		bool other = false;
-		while (!other)	//працює, доки не знайде значення, відмінне від попередніх
+		while (!other)	//values must be different
 		{
 			other = true;
 			int newvalue = rand() % 100;
@@ -95,7 +95,7 @@ int *InitKeys(int nmax)
 
 	return res;
 }
-//функція вводу значень змінних
+//read new value of variable
 int newint(char *text, int from, int to, char type)
 {
 	int res;
@@ -127,12 +127,12 @@ int newint(char *text, int from, int to, char type)
 	};
 	return res;
 }
-//основна функція. Хешування
+//main function. Hash
 int Hash(int k, int a, int b, int p, int m)
 {
 	return ((a*k + b) % p) % m;
 };
-//Вивід ключів. No coments
+//Writing keys. No commenst
 void PrintKeys(int *nowkey, int nmax)
 {	cout << endl << "Array of keys:" << endl;
 	cout <<"K = {";
@@ -144,7 +144,7 @@ void PrintKeys(int *nowkey, int nmax)
 	}
 	cout << "}" << endl << endl;
 }
-//Вивід таблиці. No coments
+//Writing table. No coments
 void printhashtable(secondlevel *now, int max)
 {
 	cout << "Hash-table:" << endl;
@@ -182,7 +182,7 @@ void printhashtable(secondlevel *now, int max)
 		cout << endl;
 	};
 }
-//вторичні таблиці
+//secondary tables
 secondlevel* GetSecond(templevel *keys, int m , int p)
 {
 	secondlevel* res = new secondlevel[m];
@@ -192,16 +192,16 @@ secondlevel* GetSecond(templevel *keys, int m , int p)
 		{
 			int mj = keys[i].count * keys[i].count; 
 			res[i].m = mj;
-			bool nocollisions = false; //відповідає за перезапуск, якщо знайдено колізію
-			int n = 0; //індекс
-			int hashj; //хеш на 2 рівні
+			bool nocollisions = false; //if a collision has been found then restart
+			int n = 0; //index
+			int hashj; //hash of 2 level
 
 			do
 			{
 				if (nocollisions)
 				{
 					hashj = Hash(keys[i].data[n], res[i].a, res[i].b, p, res[i].m);
-					if (res[i].data[hashj] == -842150451) //перевірка на колізію
+					if (res[i].data[hashj] == -842150451) //checking collision
 					{
 						res[i].data[hashj] = keys[i].data[n];
 						n++;
@@ -209,7 +209,7 @@ secondlevel* GetSecond(templevel *keys, int m , int p)
 					else
 						nocollisions = false;					
 				}
-				if (nocollisions == false) //перезапуск
+				if (nocollisions == false) //restart
 				{
 					n = 0;
 					res[i].data = new int[mj];
@@ -220,7 +220,7 @@ secondlevel* GetSecond(templevel *keys, int m , int p)
 			} while (nocollisions && n < keys[i].count);
 
 		};
-		//якщо є тільки один елемент, то кидаємо його у нульову клітинку
+		//if element only one than ... 
 		if (keys[i].count == 1)
 		{
 			res[i].data = new int[1];
@@ -229,18 +229,18 @@ secondlevel* GetSecond(templevel *keys, int m , int p)
 	};
 	return res;
 }
-//розкидання ключів за їх хешем
+//Sorting keys on 1 level
 templevel* SortKeys(int *nowkey, int n, int a, int b, int p, int m)
 {
 	templevel* res = new templevel[m];
 	int hashnow;
-	//кількість ключів у рядку, для створення масиву без використання зайвої пам'яті
+	//count of keys in the line
 	int *max = new int[m]; 
 	for (int i = 0; i < m; i++)
 		max[i] = 0;
 	for (int i = 0; i < n; i++)
 		max[Hash(nowkey[i], a, b, p, m)]++;
-	//розкидання
+	//sorting
 	for (int i = 0; i < n; i++)
 	{
 		hashnow = Hash(nowkey[i], a, b, p, m);
@@ -251,7 +251,7 @@ templevel* SortKeys(int *nowkey, int n, int a, int b, int p, int m)
 	};
 	return res;
 }
-//кількість чисел у всіх таблицях
+//error checking (collisions)
 int collisions(secondlevel *now, int nmax)
 {
 	int res = 0;
