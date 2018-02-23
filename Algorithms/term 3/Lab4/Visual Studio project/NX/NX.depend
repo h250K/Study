@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1495583913 source:d:\university\Програмування\С++\2 Семестр\Практична 3\nx\main.cpp
+	<iostream>
+	<cstdlib>
+	<ctime>
+
