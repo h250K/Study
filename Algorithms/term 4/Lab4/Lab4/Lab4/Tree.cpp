@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Tree.h"
 
-int difference(Tree::Node* now)
+int difference(Tree::Node* now) //р≥зниц€ висот
 {
 	int left = -1;
 	int right = -1;

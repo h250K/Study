@@ -226,6 +226,7 @@ namespace CppCLR_WinformsProjekt {
 	}
 	private: System::Void buttonAdd_Click(System::Object^  sender, System::EventArgs^  e) {
 		mtree->add(System::Convert::ToInt16(textData->Text));
+		mtree->sort();
 		visual.Draw(mtree);
 	}
 
@@ -249,6 +250,7 @@ namespace CppCLR_WinformsProjekt {
 					again = true;
 			};
 			mtree->add(res);
+			mtree->sort();
 		}
 		visual.Draw(mtree);
 	}
